@@ -1,0 +1,59 @@
+00001000 Starting Address
+Assembler used: EASy68K Editor/Assembler v5.16.01
+Created On: 5/1/2019 7:38:36 PM
+
+00000000                             1  *-----------------------------------------------------------
+00000000                             2  * Title      :
+00000000                             3  * Written by :
+00000000                             4  * Date       :
+00000000                             5  * Description:
+00000000                             6  *-----------------------------------------------------------
+00001000                             7      ORG    $1000
+00001000                             8  START:                  ; first instruction of program
+00001000                             9  
+00001000                            10      
+00001000                            11  * Put program code here
+00001000  103C 000D                 12      MOVE.B  #13, D0
+00001004  43F9 00001032             13      LEA     BEGIN_MSG, A1
+0000100A  4E4F                      14      TRAP    #15
+0000100C  7004                      15      MOVE.L  #4, D0
+0000100E  4E4F                      16      TRAP    #15
+00001010  2C01                      17      MOVE.L  D1, D6
+00001012  4EB9 00001024             18      JSR     FACTORIAL
+00001018  2207                      19      MOVE.L  D7, D1
+0000101A  103C 0003                 20      MOVE.B  #3, D0
+0000101E  4E4F                      21      TRAP    #15
+00001020                            22  
+00001020  FFFF FFFF                 23      SIMHALT             ; halt simulator
+00001024                            24  
+00001024                            25  * Put variables and constants here
+00001024                            26  
+00001024                            27  FACTORIAL
+00001024  2E06                      28      MOVE.L  D6, D7
+00001026                            29  FACT_LOOP
+00001026  5386                      30      SUB.L   #1, D6
+00001028  CEC6                      31      MULU    D6, D7
+0000102A  BC7C 0001                 32      CMP     #1, D6
+0000102E  66F6                      33      BNE     FACT_LOOP
+00001030  4E75                      34      RTS
+00001032                            35     
+00001032                            36     
+00001032  =0000000D                 37  CR          EQU     $0D
+00001032  =0000000A                 38  LF          EQU     $0A
+00001032= 45 6E 74 65 72 20 ...     39  BEGIN_MSG   DC.B    'Enter a number to find its factorial',CR,LF,0
+00001059                            40  
+00001059                            41      END    START        ; last line of source
+
+No errors detected
+No warnings generated
+
+
+SYMBOL TABLE INFORMATION
+Symbol-name         Value
+-------------------------
+BEGIN_MSG           1032
+CR                  D
+FACTORIAL           1024
+FACT_LOOP           1026
+LF                  A
+START               1000

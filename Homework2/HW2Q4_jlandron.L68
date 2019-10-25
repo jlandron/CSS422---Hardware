@@ -1,0 +1,177 @@
+00004000 Starting Address
+Assembler used: EASy68K Editor/Assembler v5.16.01
+Created On: 4/30/2019 9:27:40 PM
+
+00000000                             1  *-----------------------------------------------------------
+00000000                             2  * Title      :HW2Q4 - Decode 32Bit IEEE floating point number
+00000000                             3  * Written by :Joshua Landron
+00000000                             4  * Date       :30Apr2019
+00000000                             5  * Description:Decodes a IEEE floting point number input in HEX
+00000000                             6  *-----------------------------------------------------------
+00000000                             7  
+00000000                             8  * Put variables and constants here    
+00000000= 00000001                   9  UserHex     DC.L    1       *VARIABLE TO STORE USER HEX INPUT
+00000004                            10  
+00004000                            11      ORG    $4000
+00004000                            12  START:                  ; first instruction of program
+00004000                            13  *--------------------------------------------
+00004000                            14  *Program Start
+00004000                            15  *--------------------------------------------
+00004000  43F9 000040EA             16      LEA     START_MSG, A1
+00004006  103C 000E                 17      MOVE.B  #14, D0
+0000400A  4E4F                      18      TRAP    #15
+0000400C                            19      
+0000400C                            20      *Take user input, final hex number will be in D2
+0000400C  4EB9 000040BC             21      JSR     READ_CHAR   *READ FIRST DIGIT
+00004012  4EB9 000040C6             22      JSR     AtoH
+00004018  1406                      23      MOVE.B  D6,D2
+0000401A  E98A                      24      LSL.L   #4,D2       *SHIFT D2 LEFT TO MAKE ROOM FOR NEXT DIGIT
+0000401C                            25  
+0000401C  183C 0000                 26      MOVE.B  #0, D4      *LOOP COUNTER   D4 RESERVED
+00004020  1A3C 0006                 27      MOVE.B  #6, D5      *LOOP STOP      D5 RESERVED
+00004024                            28  READ_LOOP
+00004024  4EB9 000040BC             29      JSR     READ_CHAR   *LOOP TO READ NEXT 7 DIGITS
+0000402A  4EB9 000040C6             30      JSR     AtoH
+00004030  D406                      31      ADD.B   D6,D2
+00004032                            32      
+00004032  BA04                      33      CMP.B   D4,D5
+00004034  6700 0008                 34      BEQ     DONE_READ   *WHEN LOOP IS FINISHED, BRANCH BEFORE SHIFTING
+00004038  5204                      35      ADDI.B  #1,D4
+0000403A  E98A                      36      LSL.L   #4,D2       
+0000403C  60E6                      37      BRA     READ_LOOP   
+0000403E                            38  
+0000403E                            39  DONE_READ   
+0000403E  21C2 0000                 40      MOVE.L  D2,(UserHex) *Move user number to variable, leave number in D2
+00004042  4EB9 000040DC             41      JSR     PRINT_BLANK
+00004048                            42  *--------------------------------------------
+00004048                            43  *Sign check
+00004048                            44  *--------------------------------------------
+00004048                            45      *Check sign with and BTST at location 1F(leftmost bit)
+00004048  0802 001F                 46      BTST    #$1F,D2
+0000404C  6700 0012                 47      BEQ     PRINT_POS   *JUMP TO PRINT_POS IF Z FLAG IS SET
+00004050  43F9 0000413F             48      LEA     SIGN_NEG,A1 *ELSE PRINT NEGATIVE MESSAGE
+00004056  103C 000E                 49      MOVE.B  #14, D0
+0000405A  4E4F                      50      TRAP    #15
+0000405C  6000 000E                 51      BRA     START_EXP
+00004060                            52      
+00004060                            53  PRINT_POS
+00004060  43F9 00004131             54      LEA     SIGN_POS,A1
+00004066  103C 000E                 55      MOVE.B  #14, D0
+0000406A  4E4F                      56      TRAP    #15 
+0000406C                            57   
+0000406C                            58  *--------------------------------------------
+0000406C                            59  *Exponant print
+0000406C                            60  *--------------------------------------------   
+0000406C                            61  START_EXP          
+0000406C  E08A                      62      LSR.L   #$8, D2 *shift right by 23
+0000406E  E08A                      63      LSR.L   #$8, D2
+00004070  EE8A                      64      LSR.L   #$7, D2
+00004072                            65      
+00004072  43F9 0000414D             66      LEA     EXP_MSG,A1
+00004078  123C 000E                 67      MOVE.B  #14, D1
+0000407C  4E4F                      68      TRAP    #15
+0000407E  1202                      69      MOVE.B  D2, D1
+00004080  103C 0003                 70      MOVE.B  #3, D0
+00004084  4E4F                      71      TRAP    #15
+00004086  4EB9 000040DC             72      JSR     PRINT_BLANK
+0000408C                            73      
+0000408C                            74  *--------------------------------------------
+0000408C                            75  *Mantissa print
+0000408C                            76  *--------------------------------------------   
+0000408C  2438 0000                 77      MOVE.L  (UserHex),D2
+00004090  E38A                      78      LSL.L   #$1, D2     *Eliminate sign bit
+00004092  E18A                      79      LSL.L   #$8, D2     *Eliminate exponant
+00004094  E08A                      80      LSR.L   #$8, D2     *Move back to beggining
+00004096  E28A                      81      LSR.L   #$1, D2     
+00004098                            82      
+00004098                            83  RIGHT_ONE
+00004098  0802 0000                 84      BTST.L  #$0,D2
+0000409C  6600 0006                 85      BNE     DONE_SHIFTING
+000040A0  E28A                      86      LSR.L   #$1,D2
+000040A2  60F4                      87      BRA     RIGHT_ONE
+000040A4                            88  
+000040A4                            89  DONE_SHIFTING   
+000040A4  43F9 00004158             90      LEA     MTSA_MSG,A1
+000040AA  123C 000E                 91      MOVE.B  #14, D1
+000040AE  4E4F                      92      TRAP    #15
+000040B0  2202                      93      MOVE.L  D2, D1
+000040B2  103C 0003                 94      MOVE.B  #3, D0
+000040B6  4E4F                      95      TRAP    #15
+000040B8                            96      
+000040B8                            97      
+000040B8                            98  
+000040B8  FFFF FFFF                 99      SIMHALT             ; halt simulator
+000040BC                           100  
+000040BC                           101  *--------------------------------------------
+000040BC                           102  *Subroutines
+000040BC                           103  *--------------------------------------------
+000040BC                           104  *----Reading subroutine----USES D0,D1,D6,D7
+000040BC                           105    
+000040BC                           106  READ_CHAR
+000040BC  103C 0005                107      MOVE.B  #5, D0
+000040C0  4E4F                     108      TRAP    #15
+000040C2  1C01                     109      MOVE.B  D1, D6 *Store char in D6
+000040C4  4E75                     110      RTS
+000040C6                           111      
+000040C6                           112  *PARAMETER SHOULD BE STORED IN D6
+000040C6                           113  AtoH
+000040C6  1E3C 0000                114      MOVE.B  #0, D7
+000040CA  BC3C 0039                115      CMP.B   #$39, D6    *30-39 ARE NUMBERS, GREATER IS A LETTER
+000040CE  6E06                     116      BGT.B   ALPHA
+000040D0  0406 0030                117      SUBI.B  #$30, D6
+000040D4  4E75                     118      RTS
+000040D6                           119      
+000040D6                           120  ALPHA
+000040D6  0406 0037                121      SUBI.B  #$37, D6
+000040DA  4E75                     122      RTS
+000040DC                           123  
+000040DC                           124  PRINT_BLANK
+000040DC  43F9 00004163            125      LEA     BLANK_MSG,A1    *Move print to new line
+000040E2  103C 000E                126      MOVE.B  #14, D0
+000040E6  4E4F                     127      TRAP    #15  
+000040E8  4E75                     128      RTS 
+000040EA                           129  *--------------------------------------------
+000040EA                           130  *Strings
+000040EA                           131  *--------------------------------------------
+000040EA  =0000000D                132  CR      EQU     $0D
+000040EA  =0000000A                133  LF      EQU     $0A
+000040EA                           134  
+000040EA= 50 6C 65 61 73 65 ...    135  START_MSG   DC.B    'Please enter IEEE 32-bit floating point number in Hexadecimal Format',CR,LF,0
+00004131= 53 69 67 6E 20 62 ...    136  SIGN_POS    DC.B    'Sign bit: +',CR,LF,0
+0000413F= 53 69 67 6E 20 62 ...    137  SIGN_NEG    DC.B    'Sign bit: -',CR,LF,0
+0000414D= 45 78 70 6F 6E 61 ...    138  EXP_MSG     DC.B    'Exponant: ',0
+00004158= 4D 61 6E 74 69 73 ...    139  MTSA_MSG    DC.B    'Mantissa: ',0
+00004163= 0D 0A 00                 140  BLANK_MSG   DC.B    '',CR,LF,0
+00004166                           141  
+00004166                           142  
+00004166                           143  
+00004166                           144  
+00004166                           145      END    START        ; last line of source
+
+No errors detected
+No warnings generated
+
+
+SYMBOL TABLE INFORMATION
+Symbol-name         Value
+-------------------------
+ALPHA               40D6
+ATOH                40C6
+BLANK_MSG           4163
+CR                  D
+DONE_READ           403E
+DONE_SHIFTING       40A4
+EXP_MSG             414D
+LF                  A
+MTSA_MSG            4158
+PRINT_BLANK         40DC
+PRINT_POS           4060
+READ_CHAR           40BC
+READ_LOOP           4024
+RIGHT_ONE           4098
+SIGN_NEG            413F
+SIGN_POS            4131
+START               4000
+START_EXP           406C
+START_MSG           40EA
+USERHEX             0

@@ -1,0 +1,82 @@
+00001000 Starting Address
+Assembler used: EASy68K Editor/Assembler v5.16.01
+Created On: 4/28/2019 7:33:57 PM
+
+00000000                             1  *-----------------------------------------------------------
+00000000                             2  * Title      :
+00000000                             3  * Written by :
+00000000                             4  * Date       :
+00000000                             5  * Description:
+00000000                             6  *-----------------------------------------------------------
+00000000  =0000000D                  7  CR      EQU     $0D
+00000000  =0000000A                  8  LF      EQU     $0A
+00000000                             9  
+00001000                            10          ORG     $1000
+00001000                            11  START:
+00001000  2F3C CAFECAFE             12          MOVE.L  #$CAFECAFE,-(A7)
+00001006  6100 0036                 13          BSR     OUTHEX8
+0000100A  588F                      14          ADDA.L  #4,A7
+0000100C                            15  
+0000100C  2F3C 12345678             16          MOVE.L  #$12345678,-(A7)
+00001012  6100 002A                 17          BSR     OUTHEX8
+00001016  588F                      18          ADDA.L  #4,A7
+00001018                            19  
+00001018  2F3C 9ABCDEF0             20          MOVE.L  #$9ABCDEF0,-(A7)
+0000101E  6100 001E                 21          BSR     OUTHEX8
+00001022  588F                      22          ADDA.L  #4,A7
+00001024                            23  
+00001024  3F3C 000D                 24          MOVE.W  #CR,-(A7)
+00001028  6100 0050                 25          BSR     OUTCHAR
+0000102C  548F                      26          ADDA.L  #2,A7
+0000102E                            27  
+0000102E  3F3C 000A                 28          MOVE.W  #LF,-(A7)
+00001032  6100 0046                 29          BSR     OUTCHAR
+00001036  548F                      30          ADDA.L  #2,A7
+00001038                            31  
+00001038  103C 0009                 32          MOVE.B  #9,D0
+0000103C  4E4F                      33          TRAP    #15
+0000103E                            34  
+0000103E  4E56 0000                 35  OUTHEX8 LINK    A6,#0
+00001042  48E7 E000                 36          MOVEM.L D0-D2,-(A7)
+00001046  202E 0008                 37          MOVE.L  8(A6),D0
+0000104A  323C 0007                 38          MOVE.W  #8-1,D1
+0000104E  E998                      39  NXTDIG  ROL.L   #4,D0
+00001050  2400                      40          MOVE.L  D0,D2
+00001052  C4BC 0000000F             41          AND.L   #$0F,D2
+00001058  B43C 000A                 42          CMP.B   #10,D2
+0000105C  6500 0004                 43          BCS     UNDER10
+00001060  5E42                      44          ADD.W   #$07,D2
+00001062  0642 0030                 45  UNDER10 ADD.W   #$30,D2
+00001066  3F02                      46          MOVE.W  D2,-(A7)
+00001068  6100 0010                 47          BSR     OUTCHAR
+0000106C  548F                      48          ADDA.L  #2,A7
+0000106E  51C9 FFDE                 49          DBRA    D1,NXTDIG
+00001072  4CDF 0007                 50          MOVEM.L (A7)+,D0-D2
+00001076  4E5E                      51          UNLK    A6
+00001078  4E75                      52          RTS
+0000107A                            53  
+0000107A  4E56 0000                 54  OUTCHAR LINK    A6,#0
+0000107E  48E7 C000                 55          MOVEM.L D0-D1,-(A7)
+00001082  322E 0008                 56          MOVE.W  8(A6),D1
+00001086  103C 0006                 57          MOVE.B  #6,D0
+0000108A  4E4F                      58          TRAP    #15
+0000108C  4CDF 0003                 59          MOVEM.L (A7)+,D0-D1
+00001090  4E5E                      60          UNLK    A6
+00001092  4E75                      61          RTS
+00001094                            62  
+00001094                            63          END     START
+
+No errors detected
+No warnings generated
+
+
+SYMBOL TABLE INFORMATION
+Symbol-name         Value
+-------------------------
+CR                  D
+LF                  A
+NXTDIG              104E
+OUTCHAR             107A
+OUTHEX8             103E
+START               1000
+UNDER10             1062

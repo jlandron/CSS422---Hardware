@@ -1,0 +1,72 @@
+00000400 Starting Address
+Assembler used: EASy68K Editor/Assembler v5.16.01
+Created On: 4/23/2019 2:27:15 PM
+
+00000000                             1  *-----------------------------------------------------------
+00000000                             2  * Title      :H1Q4
+00000000                             3  * Written by :Joshua Landron
+00000000                             4  * Date       :17Apr2019
+00000000                             5  * Description:What is the WORD VALUE (not byte, or longword) of the data in memory location $4000, when the program is just about to
+00000000                             6  *             loop back to the place where "start" is labelled? Please describe how you got the answer as well. (For example, you can describe how
+00000000                             7  *             you analyzed the code segments, or how you traced the code segments with debug tools)
+00000000                             8  * Answer:Before executing the S68 file, I placed a breakpoint on the line with the JMP command. This pauses the execution before that works.
+00000000                             9  *        I executed the code and then examind the stack when the code paused, the word value at $4000 is 4515. I found this easily because the 
+00000000                            10  *        address $4000 is stored in A1, so choosing that register points directly at the memory location i needed.      
+00000000                            11  *-----------------------------------------------------------
+00000400                            12      ORG $400    
+00000400                            13  ********************************************************************************************************
+00000400                            14  *
+00000400                            15  * Beginning of EQUates section, just like #define in C
+00000400                            16  *
+00000400                            17  ********************************************************************************************************
+00000400  =00004000                 18  addr1 EQU $4000
+00000400  =00004001                 19  addr2 EQU $4001
+00000400  =0000A7FF                 20  data2 EQU $A7FF
+00000400  =00005555                 21  data3 EQU $5555
+00000400  =00000000                 22  data4 EQU $0000
+00000400  =00001246                 23  data5 EQU 4678
+00000400  =0000004F                 24  data6 EQU %01001111
+00000400  =00000017                 25  data7 EQU %00010111
+00000400                            26  ********************************************************************************************************
+00000400                            27  *
+00000400                            28  * Beginning of code segment. This is the actual assembly language instructions.
+00000400                            29  *
+00000400                            30  ********************************************************************************************************
+00000400                            31  * the program will run in memory
+00000400                            32  
+00000400                            33  
+00000400  303C A7FF                 34  start   MOVE.W  #data2,D0   * Load D0
+00000404  123C 004F                 35          MOVE.B  #data6,D1   * Load D1
+00000408  143C 0017                 36          MOVE.B  #data7,D2   * load D2
+0000040C  363C 5555                 37          MOVE.W  #data3,D3   * load D3
+00000410  307C 4000                 38          MOVEA.W #addr1,A0   * load address register
+00000414  10C1                      39          MOVE.B  D1,(A0)+    * transfer byte to memory
+00000416  10C2                      40          MOVE.B  D2,(A0)+    * transfer second byte
+00000418  327C 4000                 41          MOVEA.W #addr1,A1   * load address
+0000041C  C751                      42          AND.W   D3,(A1)     * Logical AND
+0000041E                            43  
+0000041E  4EF8 0400                 44          JMP     start   * This instruction keeps the program
+00000422                            45                  * looping forever
+00000422                            46              
+00000422                            47  
+00000422                            48  
+00000422                            49  
+00000422                            50  
+00000422                            51          END    $400       ; last line of source
+
+No errors detected
+No warnings generated
+
+
+SYMBOL TABLE INFORMATION
+Symbol-name         Value
+-------------------------
+ADDR1               4000
+ADDR2               4001
+DATA2               A7FF
+DATA3               5555
+DATA4               0
+DATA5               1246
+DATA6               4F
+DATA7               17
+START               400

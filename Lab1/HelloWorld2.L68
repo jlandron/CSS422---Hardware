@@ -1,0 +1,150 @@
+00001000 Starting Address
+Assembler used: EASy68K Editor/Assembler v5.16.01
+Created On: 4/10/2019 7:10:14 PM
+
+00000000                             1  *-----------------------------------------------------------
+00000000                             2  * Title      :HelloWorld2
+00000000                             3  * Written by :Joshua Landron, based on Easy68K tutorial
+00000000                             4  * Date       :4/6/2019
+00000000                             5  * Description:Sample program 2 for quickstart guide
+00000000                             6  *-----------------------------------------------------------
+00001000                             7      ORG    $1000
+00001000                             8  START:                  ; first instruction of program
+00001000                             9  
+00001000                            10  * Put program code here
+00001000                            11      *----OUTPUT----
+00001000  43F9 0000110C             12  LOOP    LEA     MESSAGE, A1
+00001006  103C 000E                 13          MOVE.B  #14, D0
+0000100A  4E4F                      14          TRAP    #15
+0000100C                            15      
+0000100C                            16      *----INPUT----
+0000100C  103C 0004                 17          MOVE.B  #4, D0
+00001010  4E4F                      18          TRAP    #15     Read a number from keyboard
+00001012  B2BC 00000000             19          CMP.L   #0, D1  CMP.L compares D1 to 0, L COMPARES EQUALITY
+00001018  6700 00E8                 20          BEQ     DONE    Branch to DONE if the comparison is true
+0000101C                            21          
+0000101C  B23C 0000                 22          CMP.B   #0, D1  Compares D1 to 0
+00001020  6D00 00D0                 23          BLT     INVALID BLT branch if D1 is less than 0
+00001024  B23C 0009                 24          CMP.B   #9, D1  Compares D1 to 9
+00001028  6E00 00C8                 25          BGT     INVALID BGT loop if D1 is greater than 9 
+0000102C                            26          
+0000102C  B23C 0001                 27          CMP.B   #1, D1      Compare D1 to 1
+00001030  6600 0010                 28          BNE     TWO         Beq branches if D1 and 1 are not equal
+00001034  43F9 00001165             29          LEA     DISPONE,A1
+0000103A  103C 000E                 30          MOVE.B  #14, D0
+0000103E  4E4F                      31          TRAP    #15
+00001040  60BE                      32          BRA     LOOP
+00001042                            33          
+00001042  B23C 0002                 34  TWO     CMP.B   #2, D1      Compare D1 to 2
+00001046  6600 0010                 35          BNE     THREE       Beq branches if D1 and 2 are not equal
+0000104A  43F9 00001175             36          LEA     DISPTWO,A1
+00001050  103C 000E                 37          MOVE.B  #14, D0
+00001054  4E4F                      38          TRAP    #15
+00001056  60A8                      39          BRA     LOOP
+00001058                            40  
+00001058  B23C 0003                 41  THREE   CMP.B   #3, D1      Compare D1 to 2
+0000105C  6600 0010                 42          BNE     FOUR        Beq branches if D1 and 3 are not equal
+00001060  43F9 00001183             43          LEA     DISPTHREE,A1
+00001066  103C 000E                 44          MOVE.B  #14, D0
+0000106A  4E4F                      45          TRAP    #15
+0000106C  6092                      46          BRA     LOOP
+0000106E                            47  
+0000106E  B23C 0004                 48  FOUR    CMP.B   #4, D1      Compare D1 to 2
+00001072  6600 0012                 49          BNE     FIVE        Beq branches if D1 and 4 are not equal
+00001076  43F9 00001191             50          LEA     DISPFOUR,A1
+0000107C  103C 000E                 51          MOVE.B  #14, D0
+00001080  4E4F                      52          TRAP    #15
+00001082  6000 FF7C                 53          BRA     LOOP
+00001086                            54  
+00001086  B23C 0005                 55  FIVE    CMP.B   #5, D1      Compare D1 to 2
+0000108A  6600 0012                 56          BNE     SIX         Beq branches if D1 and 5 are not equal
+0000108E  43F9 0000119E             57          LEA     DISPFIVE,A1
+00001094  103C 000E                 58          MOVE.B  #14, D0
+00001098  4E4F                      59          TRAP    #15
+0000109A  6000 FF64                 60          BRA     LOOP
+0000109E                            61  
+0000109E  B23C 0006                 62  SIX     CMP.B   #6, D1      Compare D1 to 2
+000010A2  6600 0012                 63          BNE     SEVEN       Beq branches if D1 and 6 are not equal
+000010A6  43F9 000011AE             64          LEA     DISPSIX,A1
+000010AC  103C 000E                 65          MOVE.B  #14, D0
+000010B0  4E4F                      66          TRAP    #15
+000010B2  6000 FF4C                 67          BRA     LOOP
+000010B6                            68  
+000010B6  B23C 0007                 69  SEVEN   CMP.B   #7, D1      Compare D1 to 2
+000010BA  6600 0012                 70          BNE     EIGHT       Beq branches if D1 and 7 are not equal
+000010BE  43F9 000011BD             71          LEA     DISPSEVEN,A1
+000010C4  103C 000E                 72          MOVE.B  #14, D0
+000010C8  4E4F                      73          TRAP    #15
+000010CA  6000 FF34                 74          BRA     LOOP
+000010CE                            75          
+000010CE  B23C 0008                 76  EIGHT   CMP.B   #8, D1      Compare D1 to 2
+000010D2  6600 0012                 77          BNE     NINE        Beq branches if D1 and 8 are not equal
+000010D6  43F9 000011CC             78          LEA     DISPEIGHT,A1
+000010DC  103C 000E                 79          MOVE.B  #14, D0
+000010E0  4E4F                      80          TRAP    #15
+000010E2  6000 FF1C                 81          BRA     LOOP
+000010E6                            82  
+000010E6  43F9 000011DC             83  NINE    LEA     DISPNINE,A1
+000010EC  103C 000E                 84          MOVE.B  #14, D0
+000010F0  4E4F                      85          TRAP    #15
+000010F2                            86          
+000010F2  43F9 0000113E             87  INVALID LEA     INV, A1
+000010F8  103C 000E                 88          MOVE.B  #14, D0
+000010FC  4E4F                      89          TRAP    #15
+000010FE  6000 FF00                 90          BRA     LOOP
+00001102                            91          
+00001102  103C 0009                 92  DONE    MOVE.B  #9, D0
+00001106  4E4F                      93          TRAP    #15   
+00001108                            94  
+00001108  FFFF FFFF                 95          SIMHALT             ; halt simulator
+0000110C                            96  
+0000110C                            97  * Put variables and constants here
+0000110C  =0000000D                 98  CR      EQU     $0D
+0000110C  =0000000A                 99  LF      EQU     $0A
+0000110C                           100  
+0000110C= 45 6E 74 65 72 20 ...    101  MESSAGE DC.B    'Enter a number between 1 and 9, Enter 0 to exit: ',0
+0000113E= 54 68 61 74 20 69 ...    102  INV     DC.B    'That is not a number between 0 and 9',CR,LF,0
+00001165= 48 45 4C 4C 4F 20 ...    103  DISPONE DC.B    'HELLO MURCURY',CR,LF,0
+00001175= 48 45 4C 4C 4F 20 ...    104  DISPTWO DC.B    'HELLO VENUS',CR,LF,0
+00001183= 48 45 4C 4C 4F 20 ...    105  DISPTHREE DC.B  'HELLO EARTH',CR,LF,0
+00001191= 48 45 4C 4C 4F 20 ...    106  DISPFOUR DC.B   'HELLO MARS',CR,LF,0
+0000119E= 48 45 4C 4C 4F 20 ...    107  DISPFIVE DC.B   'HELLO JUPITER',CR,LF,0
+000011AE= 48 45 4C 4C 4F 20 ...    108  DISPSIX DC.B    'HELLO SATURN',CR,LF,0
+000011BD= 48 45 4C 4C 4F 20 ...    109  DISPSEVEN DC.B  'HELLO URANUS',CR,LF,0
+000011CC= 48 45 4C 4C 4F 20 ...    110  DISPEIGHT DC.B  'HELLO NEPTUNE',CR,LF,0
+000011DC= 48 45 4C 4C 4F 20 ...    111  DISPNINE DC.B   'HELLO PLUTO :`(',CR,LF,0
+000011EE                           112  
+000011EE                           113          END    START        ; last line of source
+
+No errors detected
+No warnings generated
+
+
+SYMBOL TABLE INFORMATION
+Symbol-name         Value
+-------------------------
+CR                  D
+DISPEIGHT           11CC
+DISPFIVE            119E
+DISPFOUR            1191
+DISPNINE            11DC
+DISPONE             1165
+DISPSEVEN           11BD
+DISPSIX             11AE
+DISPTHREE           1183
+DISPTWO             1175
+DONE                1102
+EIGHT               10CE
+FIVE                1086
+FOUR                106E
+INV                 113E
+INVALID             10F2
+LF                  A
+LOOP                1000
+MESSAGE             110C
+NINE                10E6
+SEVEN               10B6
+SIX                 109E
+START               1000
+THREE               1058
+TWO                 1042

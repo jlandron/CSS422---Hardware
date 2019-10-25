@@ -1,0 +1,124 @@
+00001000 Starting Address
+Assembler used: EASy68K Editor/Assembler v5.16.01
+Created On: 4/10/2019 7:31:08 PM
+
+00000000                             1  *-----------------------------------------------------------
+00000000                             2  * Title      :HelloWorld2
+00000000                             3  * Written by :Joshua Landron, based on Easy68K tutorial
+00000000                             4  * Date       :4/6/2019
+00000000                             5  * Description:Customized sample program 2 for quickstart guide
+00000000                             6  *-----------------------------------------------------------
+00001000                             7      ORG    $1000
+00001000                             8  START:                  ; first instruction of program
+00001000                             9  
+00001000                            10  * Put program code here
+00001000                            11  *-------------OUTPUT---------
+00001000  43F9 000010C8             12  LOOP    LEA     MESSAGE, A1
+00001006  103C 000E                 13          MOVE.B  #14, D0
+0000100A  4E4F                      14          TRAP    #15
+0000100C                            15      
+0000100C                            16  *-------------INPUT-----------
+0000100C  103C 0004                 17          MOVE.B  #4, D0
+00001010  4E4F                      18          TRAP    #15          Read a number from keyboard
+00001012  B2BC 00000000             19          CMP.L   #0, D1       CMP.L compares D1 to 0, L COMPARES EQUALITY
+00001018  6700 00A4                 20          BEQ     DONE         Branch to DONE if the comparison is true
+0000101C                            21  
+0000101C                            22  *------CHECKING VALUE---------            
+0000101C  B23C 0014                 23          CMP.B   #20, D1      Compares D1 to 20
+00001020  6D00 008C                 24          BLT     INVALID      BLT branch if D1 is less than 20
+00001024  B23C 0019                 25          CMP.B   #25, D1      Compares D1 to 25
+00001028  6E00 0084                 26          BGT     INVALID      BGT loop if D1 is greater than 25 
+0000102C                            27          
+0000102C  B23C 0014                 28          CMP.B   #20, D1      Compare D1 to 20
+00001030  6600 0010                 29          BNE     TONE         Beq branches if D1 and 1 are not equal
+00001034  43F9 00001132             30          LEA     DISP20,A1
+0000103A  103C 000E                 31          MOVE.B  #14, D0
+0000103E  4E4F                      32          TRAP    #15
+00001040  60BE                      33          BRA     LOOP
+00001042                            34          
+00001042  B23C 0015                 35  TONE    CMP.B   #21, D1      
+00001046  6600 0010                 36          BNE     TTWO        
+0000104A  43F9 0000115B             37          LEA     DISP21,A1
+00001050  103C 000E                 38          MOVE.B  #14, D0
+00001054  4E4F                      39          TRAP    #15
+00001056  60A8                      40          BRA     LOOP
+00001058                            41  
+00001058  B23C 0016                 42  TTWO    CMP.B   #22, D1     
+0000105C  6600 0010                 43          BNE     TTHREE         
+00001060  43F9 00001188             44          LEA     DISP22,A1
+00001066  103C 000E                 45          MOVE.B  #14, D0
+0000106A  4E4F                      46          TRAP    #15
+0000106C  6092                      47          BRA     LOOP
+0000106E                            48  
+0000106E  B23C 0017                 49  TTHREE  CMP.B   #23, D1      
+00001072  6600 0012                 50          BNE     TFOUR         
+00001076  43F9 000011CC             51          LEA     DISP23,A1
+0000107C  103C 000E                 52          MOVE.B  #14, D0
+00001080  4E4F                      53          TRAP    #15
+00001082  6000 FF7C                 54          BRA     LOOP
+00001086                            55  
+00001086  B23C 0018                 56  TFOUR   CMP.B   #24, D1      
+0000108A  6600 0012                 57          BNE     TFIVE          
+0000108E  43F9 0000120C             58          LEA     DISP24,A1
+00001094  103C 000E                 59          MOVE.B  #14, D0
+00001098  4E4F                      60          TRAP    #15
+0000109A  6000 FF64                 61          BRA     LOOP
+0000109E                            62  
+0000109E  43F9 00001249             63  TFIVE   LEA     DISP25,A1  Last option is 25
+000010A4  103C 000E                 64          MOVE.B  #14, D0
+000010A8  4E4F                      65          TRAP    #15
+000010AA  6000 FF54                 66          BRA     LOOP
+000010AE                            67          
+000010AE                            68  *------INVALID ENTRY----------        
+000010AE  43F9 000010FC             69  INVALID LEA     INV, A1
+000010B4  103C 000E                 70          MOVE.B  #14, D0
+000010B8  4E4F                      71          TRAP    #15
+000010BA  6000 FF44                 72          BRA     LOOP
+000010BE                            73          
+000010BE  103C 0009                 74  DONE    MOVE.B  #9, D0
+000010C2  4E4F                      75          TRAP    #15   
+000010C4                            76  
+000010C4  FFFF FFFF                 77          SIMHALT             ; halt simulator
+000010C8                            78  
+000010C8                            79  * Put variables and constants here
+000010C8  =0000000D                 80  CR      EQU     $0D
+000010C8  =0000000A                 81  LF      EQU     $0A
+000010C8                            82  
+000010C8= 45 6E 74 65 72 20 ...     83  MESSAGE DC.B    'Enter a number between 20 and 25, Enter 0 to exit: ',0
+000010FC= 41 57 57 20 53 68 ...     84  INV     DC.B    'AWW Shucks! That is not a number between 20 and 25!',CR,LF,0
+00001132= 46 75 6E 20 66 61 ...     85  DISP20  DC.B    'Fun fact: It rains diamonds on Saturn.',CR,LF,0
+0000115B= 46 75 6E 20 66 61 ...     86  DISP21  DC.B    'Fun fact: Squids have donut shaped brains.',CR,LF,0
+00001188= 46 75 6E 20 66 61 ...     87  DISP22  DC.B    'Fun fact: A cat has been gentically modified to glow in the dark.',CR,LF,0
+000011CC= 46 75 6E 20 66 61 ...     88  DISP23  DC.B    'Fun fact: Yoda and Miss.Piggy were voiced by the same person.',CR,LF,0
+0000120C= 46 75 6E 20 66 61 ...     89  DISP24  DC.B    'Fun fact: France is the most viseted country in the world.',CR,LF,0
+00001249= 46 75 6E 20 66 61 ...     90  DISP25  DC.B    'Fun fact: There is a parking spot in Manhattan that sold for $1 million.',CR,LF,0
+00001294                            91  
+00001294                            92  
+00001294                            93          END    START        ; last line of source
+
+No errors detected
+No warnings generated
+
+
+SYMBOL TABLE INFORMATION
+Symbol-name         Value
+-------------------------
+CR                  D
+DISP20              1132
+DISP21              115B
+DISP22              1188
+DISP23              11CC
+DISP24              120C
+DISP25              1249
+DONE                10BE
+INV                 10FC
+INVALID             10AE
+LF                  A
+LOOP                1000
+MESSAGE             10C8
+START               1000
+TFIVE               109E
+TFOUR               1086
+TONE                1042
+TTHREE              106E
+TTWO                1058

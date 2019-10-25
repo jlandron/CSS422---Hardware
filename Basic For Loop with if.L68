@@ -1,0 +1,104 @@
+00001018 Starting Address
+Assembler used: EASy68K Editor/Assembler v5.16.01
+Created On: 4/26/2019 10:24:18 PM
+
+00000000                             1  *-----------------------------------------------------------
+00000000                             2  * Title      :
+00000000                             3  * Written by :
+00000000                             4  * Date       :
+00000000                             5  * Description:
+00000000                             6  *-----------------------------------------------------------
+00001000                             7      ORG    $1000
+00001000                             8   
+00001000                             9    *Subroutines
+00001000  43F9 00001073             10  ADD_ONE     LEA MSG_ONE, A1
+00001006  700E                      11              MOVE.L  #14,D0
+00001008  4E4F                      12              TRAP    #15
+0000100A  4E75                      13              RTS         *Will pop address from stack and return
+0000100C                            14  
+0000100C                            15  
+0000100C  43F9 00001066             16  ADD_ZERO    LEA MSG_ZERO, A1
+00001012  700E                      17              MOVE.L  #14,D0
+00001014  4E4F                      18              TRAP    #15
+00001016  4E75                      19              RTS
+00001018                            20              
+00001018                            21              
+00001018                            22              
+00001018  =00006000                 23  LOCATION        EQU     $6000    
+00001018                            24                  
+00001018                            25      
+00001018                            26  *ALL_REGISTERS   REG     DO-D7/A0-A6
+00001018                            27  GROUP           REG     D0-D3/A0-A6
+00001018                            28  
+00001018                            29     
+00001018                            30  START:                  ; first instruction of program
+00001018  21FC 00004567 6000        31          MOVE.L  #$4567,LOCATION
+00001020                            32  * Put program code here
+00001020                            33      
+00001020  7000                      34              MOVE.L  #0, D0  *INCREMENT COUNTER
+00001022  7210                      35              MOVE.L  #16, D1 *STOP NUMBER
+00001024  B200                      36  FOR_LOOP    CMP.B   D0, D1
+00001026  6700 0030                 37              BEQ     END_LOOP
+0000102A                            38              
+0000102A                            39              *If Statement
+0000102A  2438 6000                 40              MOVE.L  (LOCATION),D2  *DATA FRO COMPARISON
+0000102E  0102                      41              BTST.L  D0,D2
+00001030  6700 0006                 42              BEQ     GO_ZERO
+00001034  6000 0012                 43              BRA     GO_ONE
+00001038                            44              
+00001038  48A7 F0FE                 45  GO_ZERO     MOVEM   GROUP,-(SP)
+0000103C  4EB8 100C                 46              JSR     ADD_ZERO        *Will jump to Subroutine
+00001040  4C9F 7F0F                 47              MOVEM   (SP)+,GROUP
+00001044  5280                      48              ADDQ.L  #1, D0          
+00001046  60DC                      49              BRA     FOR_LOOP
+00001048                            50              
+00001048  48A7 F0FE                 51  GO_ONE      MOVEM   GROUP,-(SP)
+0000104C  4EB8 1000                 52              JSR     ADD_ONE
+00001050  4C9F 7F0F                 53              MOVEM   (SP)+,GROUP
+00001054                            54  
+00001054  5280                      55              ADDQ.L  #1, D0          
+00001056  60CC                      56              BRA     FOR_LOOP
+00001058                            57                
+00001058  43F9 0000107F             58  END_LOOP    LEA END_MESSAGE, A1
+0000105E  700E                      59              MOVE.L  #14,D0
+00001060  4E4F                      60              TRAP    #15
+00001062                            61              
+00001062  FFFF FFFF                 62              SIMHALT             ; halt simulaton
+00001066                            63              
+00001066                            64  
+00001066                            65  
+00001066                            66  
+00001066                            67  
+00001066                            68  * Put variables and constants here            
+00001066                            69  
+00001066                            70  
+00001066  =0000000D                 71  CR      EQU     $0D         *Carriage return
+00001066  =0000000A                 72  LF      EQU     $0A         *Line feed
+00001066                            73  
+00001066= 5A 45 52 4F 20 46 ...     74  MSG_ZERO    DC.B    'ZERO FOUND',CR,LF,0
+00001073= 4F 4E 45 20 46 4F ...     75  MSG_ONE     DC.B    'ONE FOUND',CR,LF,0
+0000107F= 45 4E 44 20 4F 46 ...     76  END_MESSAGE     DC.B    'END OF LOOP',0
+0000108B                            77  
+0000108B                            78      END    START        ; last line of source
+
+No errors detected
+No warnings generated
+
+
+SYMBOL TABLE INFORMATION
+Symbol-name         Value
+-------------------------
+ADD_ONE             1000
+ADD_ZERO            100C
+CR                  D
+END_LOOP            1058
+END_MESSAGE         107F
+FOR_LOOP            1024
+GO_ONE              1048
+GO_ZERO             1038
+GROUP               7F0F
+LF                  A
+LOCATION            6000
+MSG_ONE             1073
+MSG_ZERO            1066
+START               1018

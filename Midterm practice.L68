@@ -1,0 +1,109 @@
+00001000 Starting Address
+Assembler used: EASy68K Editor/Assembler v5.16.01
+Created On: 5/1/2019 7:19:51 PM
+
+00000000                             1  *-----------------------------------------------------------
+00000000                             2  * Title      :
+00000000                             3  * Written by :
+00000000                             4  * Date       :
+00000000                             5  * Description:
+00000000                             6  *-----------------------------------------------------------
+00001000                             7      ORG    $1000
+00001000                             8      
+00001000                             9  START:                  ; first instruction of program
+00001000  247C 00006000             10      MOVEA.L #$6000, A2
+00001006  34FC 7C08                 11      MOVE.W  #$7C08,(A2)+
+0000100A  34FC 4428                 12      MOVE.W  #$4428,(A2)+
+0000100E  34FC 4408                 13      MOVE.W  #$4408,(A2)+
+00001012  34FC 4408                 14      MOVE.W  #$4408,(A2)+
+00001016  34BC 7C3E                 15      MOVE.W  #$7C3E,(A2)   
+0000101A  247C 00006000             16      MOVEA.L #$6000, A2
+00001020                            17      
+00001020                            18  * Put program code here
+00001020  183C 0000                 19      MOVE.B  #0, D4
+00001024  1A3C 0005                 20      MOVE.B  #5, D5
+00001028                            21  PRE_PRINT
+00001028  103C 000F                 22      MOVE.B  #15, D0
+0000102C  143C 0002                 23      MOVE.B  #2 , D2
+00001030  321A                      24      MOVE.W  (A2)+,D1
+00001032  4E4F                      25      TRAP    #15
+00001034  4EB9 000010B4             26      JSR     PRINT_BLANK
+0000103A  5204                      27      ADDI.B  #1, D4
+0000103C  BA44                      28      CMP.W   D4, D5
+0000103E  66E8                      29      BNE     PRE_PRINT
+00001040                            30      
+00001040  247C 00006000             31      MOVEA.L #$6000, A2
+00001046  143C 0000                 32      MOVE.B  #0, D2
+0000104A  163C 0005                 33      MOVE.B  #5, D3
+0000104E                            34  AND_LOOP
+0000104E  025A 00FF                 35      ANDI.W  #$00FF,(A2)+
+00001052  5202                      36      ADDI.B  #1, D2
+00001054  B642                      37      CMP.W   D2, D3
+00001056  66F6                      38      BNE     AND_LOOP
+00001058                            39      
+00001058                            40      *Reset A2 and counters
+00001058  247C 00006000             41      MOVEA.L #$6000, A2
+0000105E  143C 0000                 42      MOVE.B  #0, D2
+00001062  163C 0005                 43      MOVE.B  #5, D3
+00001066                            44  PUSH_LOOP    
+00001066  3F1A                      45      MOVE.W  (A2)+,-(SP)
+00001068  5202                      46      ADDI.B  #1, D2
+0000106A  B642                      47      CMP.W   D2, D3
+0000106C  66F8                      48      BNE     PUSH_LOOP
+0000106E                            49      
+0000106E  247C 00006000             50      MOVEA.L #$6000, A2
+00001074  143C 0000                 51      MOVE.B  #0, D2
+00001078  163C 0005                 52      MOVE.B  #5, D3
+0000107C                            53  POP_LOOP
+0000107C  34DF                      54      MOVE.W  (SP)+,(A2)+
+0000107E  5202                      55      ADDI.B  #1, D2
+00001080  B642                      56      CMP.W   D2, D3
+00001082  66F8                      57      BNE     POP_LOOP
+00001084                            58      
+00001084  4EB9 000010B4             59      JSR     PRINT_BLANK
+0000108A  247C 00006000             60      MOVEA.L #$6000, A2
+00001090  183C 0000                 61      MOVE.B  #0, D4
+00001094  1A3C 0005                 62      MOVE.B  #5, D5
+00001098                            63  POST_PRINT
+00001098  103C 000F                 64      MOVE.B  #15, D0
+0000109C  143C 0002                 65      MOVE.B  #2 , D2
+000010A0  321A                      66      MOVE.W  (A2)+,D1
+000010A2  4E4F                      67      TRAP    #15
+000010A4  4EB9 000010B4             68      JSR     PRINT_BLANK
+000010AA  5204                      69      ADDI.B  #1, D4
+000010AC  BA44                      70      CMP.W   D4, D5
+000010AE  66E8                      71      BNE     POST_PRINT
+000010B0                            72      
+000010B0  FFFF FFFF                 73      SIMHALT             ; halt simulator
+000010B4                            74  
+000010B4                            75  * Put variables and constants here
+000010B4                            76  PRINT_BLANK
+000010B4  43F9 000010C2             77      LEA     BLANK_MSG,A1    *Move print to new line
+000010BA  103C 000E                 78      MOVE.B  #14, D0
+000010BE  4E4F                      79      TRAP    #15  
+000010C0  4E75                      80      RTS 
+000010C2                            81  
+000010C2  =0000000D                 82  CR      EQU     $0D
+000010C2  =0000000A                 83  LF      EQU     $0A
+000010C2                            84  
+000010C2= 0D 0A 00                  85  BLANK_MSG   DC.B    '',CR,LF,0
+000010C5                            86  
+000010C5                            87      END    START        ; last line of source
+
+No errors detected
+No warnings generated
+
+
+SYMBOL TABLE INFORMATION
+Symbol-name         Value
+-------------------------
+AND_LOOP            104E
+BLANK_MSG           10C2
+CR                  D
+LF                  A
+POP_LOOP            107C
+POST_PRINT          1098
+PRE_PRINT           1028
+PRINT_BLANK         10B4
+PUSH_LOOP           1066
+START               1000

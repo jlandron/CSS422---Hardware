@@ -1,0 +1,59 @@
+00001000 Starting Address
+Assembler used: EASy68K Editor/Assembler v5.16.01
+Created On: 4/10/2019 11:31:49 PM
+
+00000000                             1  *-----------------------------------------------------------
+00000000                             2  * Title      :Hello World
+00000000                             3  * Written by :Joshua Landron, based on Easy68K tutorial
+00000000                             4  * Date       :4/6/2019
+00000000                             5  * Description:Sample program 1 for quickstart guide
+00000000                             6  *-----------------------------------------------------------
+00001000                             7      ORG    $1000
+00001000                             8  START:                  ; first instruction of program
+00001000                             9  
+00001000                            10  * Put program code here
+00001000                            11          *MOVE    #3, D0         *task 14 is display null terminated string
+00001000                            12          *MOVE    #3, D0
+00001000  243C 025C30F7             13          MOVE.L   #$025C30F7, D2
+00001006  0602 0010                 14          ADDI.B #$10,D2
+0000100A                            15          
+0000100A  243C 025C30F7             16          MOVE.L   #$025C30F7, D2
+00001010  0642 0010                 17          ADDI.W #$10,D2
+00001014                            18          
+00001014  223C 3456ABCF             19          MOVE.L  #$3456ABCF, D1
+0000101A  E741                      20          ASL.W   #3, D1
+0000101C                            21          
+0000101C  223C 3456ABCF             22          MOVE.L  #$3456ABCF, D1
+00001022  E641                      23          ASR.W   #3, D1
+00001024                            24          
+00001024  223C 3456CBCF             25          MOVE.L  #$3456CBCF, D1
+0000102A  E759                      26          ROL.W   #3, D1
+0000102C                            27          
+0000102C                            28          *TRAP    #15
+0000102C                            29          
+0000102C  303C 0009                 30          MOVE    #9, D0          *task 9 moved into D0 tells TRAP to terminate
+00001030  4E4F                      31          TRAP    #15            ; halt simulator
+00001032                            32  
+00001032                            33  * Put variables and constants here
+00001032  =0000000D                 34  CR      EQU     $0D         Carriage return
+00001032  =0000000A                 35  LF      EQU     $0A         Line feed
+00001032= 48 65 6C 6C 6F 2C ...     36  MESSAGE DC.B    'Hello, My name is Josh Landron.',CR,LF,CR,LF
+00001055= 54 68 69 73 20 70 ...     37          DC.B    'This program was interesting to learn',CR,LF
+0000107C= 41 73 73 65 6D 62 ...     38          DC.B    'Assembly seems daunting, but the more I work with it,',CR,LF
+000010B3= 54 68 65 20 65 61 ...     39          DC.B    'The easier it gets.',CR,LF
+000010C8= 49 20 68 6F 70 65 ...     40          DC.B    'I hope I can learn to use assembly well as the class continues',CR,LF,CR,LF
+0000110A= 54 68 61 6E 6B 20 ...     41          DC.B    'Thank you for listening.',0  
+00001123                            42  
+00001123                            43          END     START        ; last line of source
+
+No errors detected
+No warnings generated
+
+
+SYMBOL TABLE INFORMATION
+Symbol-name         Value
+-------------------------
+CR                  D
+LF                  A
+MESSAGE             1032
+START               1000
